@@ -1,4 +1,3 @@
-import dotenv from "dotenv";
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import XLSX from "xlsx";
@@ -10,7 +9,6 @@ puppeteer.use(StealthPlugin());
 (async () => {
   try {
     // Load environment variables from .env file
-    dotenv.config();
 
     // Launch Puppeteer browser
     const browser = await puppeteer.launch({
@@ -198,7 +196,6 @@ puppeteer.use(StealthPlugin());
     await filterCompanyData();
     console.log(Data);
     await page.close();
-    await browser.close(); 
     
     const dataArray = [];
    // Extract headers from the first object
