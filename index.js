@@ -199,26 +199,25 @@ import { Locator } from "puppeteer";
     console.log(Data);
     await page.close();
     
-    const dataArray = [];
    // Extract headers from the first object
-const headers = Object.keys(Data[0]);
+  const headers = Object.keys(Data[0]);
 
-// Extract data rows
-const dataRows = Data.map(obj => headers.map(header => obj[header] || ""));
+  // Extract data rows
+  const dataRows = Data.map(obj => headers.map(header => obj[header] || ""));
 
-// Insert headers as the first row
-dataRows.unshift(headers);
+  // Insert headers as the first row
+  dataRows.unshift(headers);
 
-// Create a new workbook
-const workbook = XLSX.utils.book_new();
+  // Create a new workbook
+  const workbook = XLSX.utils.book_new();
 
-// Convert data rows to worksheet
-const worksheet = XLSX.utils.aoa_to_sheet(dataRows);
+  // Convert data rows to worksheet
+  const worksheet = XLSX.utils.aoa_to_sheet(dataRows);
 
-// Append worksheet to workbook
-XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-XLSX.writeFile(workbook, 'companyData.xlsx');  // Write the workbook to a file
-  } catch (error) {
-    console.log(error.message);
-  }
+  // Append worksheet to workbook
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+  XLSX.writeFile(workbook, 'companyData.xlsx');  // Write the workbook to a file
+    } catch (error) {
+      console.log(error.message);
+    }
 })();
