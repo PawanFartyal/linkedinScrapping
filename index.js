@@ -40,10 +40,10 @@ import { Locator } from "puppeteer";
     // Fill in username and password fields
     await page.waitForSelector("#session_key");
     await page.type("#session_key", USERNAME, { delay: 100 });
-    await page.waitForSelector("#session_password");
+    await page.waitForSelector("#session_password"); // Wait for 5 second
     await new Promise((r) => setTimeout(r, 5000));
     await page.type("#session_password", PASSWORD, { delay: 100 });
-    await new Promise((r) => setTimeout(r, 5000)); // Wait for 1 second
+    await new Promise((r) => setTimeout(r, 5000)); // Wait for 5 second
 
     // Press Enter to log in
     await page.keyboard.press("Enter");
