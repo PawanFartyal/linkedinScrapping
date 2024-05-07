@@ -1,15 +1,16 @@
 import puppeteer from "puppeteer-extra";
+import dotenv from "dotenv";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import XLSX from "xlsx";
 import { Locator } from "puppeteer";
 
-// Use StealthPlugin for stealth browsing
-puppeteer.use(StealthPlugin());
 
 (async () => {
   try {
     // Load environment variables from .env file
-
+    dotenv.config();
+    // Use StealthPlugin for stealth browsing
+    puppeteer.use(StealthPlugin());
     // Launch Puppeteer browser
     const browser = await puppeteer.launch({
       headless: false, 
@@ -20,8 +21,8 @@ puppeteer.use(StealthPlugin());
     });
 
     // Credentials and filters
-    const USERNAME = "johnlegend2501@yahoo.com";
-    const PASSWORD = "aezakmis";
+    const USERNAME = process.env.USER_NAME;
+    const PASSWORD = process.env.PASSWORD;
     const SEARCH_FIELD = "education";
     const LOCATION_FILTER = ["India", "dubai"];
     const INDUSTRY_FILTER = ["Education"];
@@ -40,8 +41,9 @@ puppeteer.use(StealthPlugin());
     await page.waitForSelector("#session_key");
     await page.type("#session_key", USERNAME, { delay: 100 });
     await page.waitForSelector("#session_password");
+    await new Promise((r) => setTimeout(r, 5000));
     await page.type("#session_password", PASSWORD, { delay: 100 });
-    await new Promise((r) => setTimeout(r, 1000)); // Wait for 1 second
+    await new Promise((r) => setTimeout(r, 5000)); // Wait for 1 second
 
     // Press Enter to log in
     await page.keyboard.press("Enter");
@@ -49,6 +51,7 @@ puppeteer.use(StealthPlugin());
 
     // Search for companies
     await page.locator(".search-global-typeahead__input").fill(SEARCH_FIELD);
+    await new Promise((r) => setTimeout(r, 5000));
     await page.keyboard.press("Enter");
     await page.waitForNavigation();
 
@@ -185,7 +188,6 @@ puppeteer.use(StealthPlugin());
         await companyPage.close();
         if (Data.length >= TOTAL_COMPANY) return;
       }
-      console.log(Data.length);
         await page.waitForSelector('button[aria-label="Next"]');
         const nextBtn = await page.$('button[aria-label="Next"]');
         await nextBtn.click();
@@ -215,8 +217,7 @@ const worksheet = XLSX.utils.aoa_to_sheet(dataRows);
 
 // Append worksheet to workbook
 XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-XLSX.writeFile(workbook, 'companyData.xlsx');
-// Write the workbook to a file
+XLSX.writeFile(workbook, 'companyData.xlsx');  // Write the workbook to a file
   } catch (error) {
     console.log(error.message);
   }
